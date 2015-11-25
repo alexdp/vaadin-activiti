@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import com.github.alexdp.util.vaadin.WorkflowFormLayout.TextAreaField;
+
 @Entity
 public class Applicant {
 
@@ -15,6 +17,9 @@ public class Applicant {
 	private String lastname;
 	private String email;
 	private String phoneNumber;
+	
+	@TextAreaField(columns=25, rows=10)
+	private String comment;
 
 	public Long getId() {
 		return id;
@@ -55,5 +60,15 @@ public class Applicant {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	
+	
 
 }
