@@ -1,9 +1,14 @@
 package com.github.alexdp.model;
 
+import java.io.File;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Type;
+
+import com.github.alexdp.util.hibernate.FilePathType;
 import com.github.alexdp.util.vaadin.WorkflowFormLayout.TextAreaField;
 
 @Entity
@@ -17,6 +22,8 @@ public class Applicant {
 	private String lastname;
 	private String email;
 	private String phoneNumber;
+	private File cvFile;
+	
 	
 	@TextAreaField(columns=25, rows=10)
 	private String comment;
