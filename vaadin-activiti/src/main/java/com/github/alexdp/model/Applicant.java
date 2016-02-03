@@ -2,13 +2,13 @@ package com.github.alexdp.model;
 
 import java.io.File;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
-import org.hibernate.annotations.Type;
-
-import com.github.alexdp.util.hibernate.FilePathType;
 import com.github.alexdp.util.vaadin.WorkflowFormLayout.TextAreaField;
 
 @Entity
@@ -23,7 +23,8 @@ public class Applicant {
 	private String email;
 	private String phoneNumber;
 	private File cvFile;
-	
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Address address;
 	
 	@TextAreaField(columns=25, rows=10)
 	private String comment;
@@ -68,6 +69,17 @@ public class Applicant {
 		this.phoneNumber = phoneNumber;
 	}
 
+
+
+	public Address getAddress() {
+		if (address == null) address = new Address();
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
+
 	public String getComment() {
 		return comment;
 	}
@@ -75,6 +87,7 @@ public class Applicant {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	
 	
 	
 

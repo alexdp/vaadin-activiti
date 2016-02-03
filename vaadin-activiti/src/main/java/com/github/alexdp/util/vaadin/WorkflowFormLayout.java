@@ -1,5 +1,6 @@
 package com.github.alexdp.util.vaadin;
 
+import java.beans.IntrospectionException;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
@@ -38,14 +39,24 @@ public class WorkflowFormLayout<T> extends FormLayout {
 	private HorizontalLayout buttonLayout;
 	private boolean isAttached = false;
 	private Map<String, Field<?>> specialFieldBindingMap = new HashMap<String, Field<?>>();
-
+	private Map<String, java.lang.reflect.Field> beanDescription = new HashMap<>();
+	
 	public WorkflowFormLayout(T bean) {
 		this.bean = bean;
 	}
 
 	private FieldGroup getFieldGroup() {
 		if (this.fieldGroup == null) {
-			BeanItem<T> item = new BeanItem<T>(this.bean);
+			try {
+				this.beanDescription = PropertyUtils.describe(this.bean.getClass());
+			} catch (IntrospectionException e) {
+				e.printStackTrace();
+			}
+			
+			BeanItem<T> item = new BeanItem<T>(this.bean, PropertyUtils.filterTopLevelPropertyIDs(this.beanDescription));
+			for (String aNestedProperty : PropertyUtils.filterNestedPropertyIDs(this.beanDescription)) {
+				item.addNestedProperty(aNestedProperty);
+			}
 			this.fieldGroup = new BeanFieldGroup<T>((Class<T>) this.bean.getClass()) {
 				
 				private Map<String, java.lang.reflect.Field> captionToReflectFieldMap = new HashMap<String, java.lang.reflect.Field>();
@@ -61,6 +72,7 @@ public class WorkflowFormLayout<T> extends FormLayout {
 					if (specialFieldBindingMap.containsKey(caption)) {
 						return (T) specialFieldBindingMap.get(caption);
 					}
+					// Get collection instance here
 					Field<?> annotatedField = createAnnotatedField(captionToReflectFieldMap.get(caption));
 					if (annotatedField != null) {
 						annotatedField.setCaption(caption);
@@ -163,17 +175,7 @@ public class WorkflowFormLayout<T> extends FormLayout {
 	}
 
 	private java.lang.reflect.Field getIntrospectedField(String propertyId) {
-		Class<?> clazz = this.bean.getClass();
-		try {
-			return clazz.getDeclaredField(propertyId);
-		} catch (SecurityException e) {
-			throw new RuntimeException("Can't access field " + propertyId + " in class " + clazz.getName(), e);
-		} catch (NoSuchFieldException e) {
-			if (clazz.getSuperclass() != null) {
-				return getIntrospectedField(propertyId);
-			}
-			throw new RuntimeException("Can't find field " + propertyId + " in class " + clazz.getName(), e);
-		}
+		return this.beanDescription.get(propertyId);
 	}
 	
 	private Field<?> createAnnotatedField(java.lang.reflect.Field introspectedField) {

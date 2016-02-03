@@ -67,6 +67,13 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.4</version>
 		</dependency>
+        <!-- TRANSLATOR (start) -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.3.1</version>
+        </dependency>
+        <!-- TRANSLATOR (end) -->		
 	</dependencies>
 	<build>
 		<plugins>
