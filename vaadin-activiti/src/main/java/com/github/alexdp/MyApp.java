@@ -1,12 +1,9 @@
 package com.github.alexdp;
 
-import javax.persistence.EntityManagerFactory;
-
 import org.activiti.engine.IdentityService;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.spring.SpringProcessEngineConfiguration;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -15,8 +12,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.context.annotation.EnableLoadTimeWeaving;
+import org.springframework.context.annotation.EnableLoadTimeWeaving.AspectJWeaving;
+import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 
 @SpringBootApplication
+@EnableLoadTimeWeaving(aspectjWeaving=AspectJWeaving.ENABLED)
+@EnableSpringConfigured
+@EnableAspectJAutoProxy
 public class MyApp extends SpringBootServletInitializer {
 
 
