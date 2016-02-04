@@ -12,15 +12,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.EnableLoadTimeWeaving;
-import org.springframework.context.annotation.EnableLoadTimeWeaving.AspectJWeaving;
 import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-@EnableLoadTimeWeaving(aspectjWeaving=AspectJWeaving.ENABLED)
 @EnableSpringConfigured
-@EnableAspectJAutoProxy
+@EnableTransactionManagement
 public class MyApp extends SpringBootServletInitializer {
 
 

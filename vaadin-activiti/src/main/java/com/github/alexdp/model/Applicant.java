@@ -23,7 +23,7 @@ public class Applicant {
 	private String email;
 	private String phoneNumber;
 	private File cvFile;
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Address address;
 	
 	@TextAreaField(columns=25, rows=10)
